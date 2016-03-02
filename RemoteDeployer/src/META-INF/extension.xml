@@ -1,0 +1,108 @@
+<extension id="opensky.remotedeployer" version="1.0" esdk-version="1.0"
+           rsbundle-class="opensky.remotedeployer.Res"
+           xmlns="http://jcp.org/jsr/198/extension-manifest">
+  <name>${EXTENSION_NAME}</name>
+  
+    <dependencies>
+    <import>oracle.ide</import>
+  </dependencies>
+  <classpaths>
+    <classpath>../../ide/lib/javatools.jar</classpath>
+    <classpath>../../ide/lib/oicons.jar</classpath>
+  </classpaths>
+  
+  <platform-info>
+    <toolkit>swing</toolkit>
+  </platform-info>
+  
+  
+  <hooks>
+    <!-- TODO Declare functionality provided by the opensky.remotedeployer extension. -->
+        <!-- 
+      The feature hook controls the display of the extension on the 
+      Extensions page of preferences.
+    -->
+    <feature-hook>
+      <description>Enable deployment of projects to remote standalone server. 
+      The extention helps to copy the jar after deployment to pre-defined standalone weblogic server</description>
+      <optional>true</optional>
+    </feature-hook>
+    <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+         <!-- 
+        Define an action that will be used in various menus and toolbars.
+        You can set any Swing action property on the action. The controller
+        class implements oracle.ide.controller.Controller and determines
+        when the action is enabled and what it does.
+        
+        You can use an ampersand (escaped as &amp;) in the Name property
+        to specify the mnemonic for any menu items containing the action.
+      -->
+      <actions>
+        <action id="opensky.remotedeployer.invokeAction">
+          <properties>
+            <property name="Name">&amp;Copy Deployed jar to Standalone</property>
+            <property name="SmallIcon">${OracleIcons.ACTION}</property>
+          </properties>
+          <controller-class>opensky.remotedeployer.BaseController</controller-class>
+        </action>
+      </actions>
+      <actions>
+        <action id="opensky.remotedeployer.invokeConfig">
+          <properties>
+            <property name="Name">&amp;Manage Remote Deployer</property>
+            <property name="SmallIcon">${OracleIcons.SETTINGS}</property>
+          </properties>
+          <controller-class>opensky.remotedeployer.ConfigController</controller-class>
+        </action>
+      </actions>
+    <!--
+        Install listeners to the navigator, editor, and structure pane (explorer)
+        context menus so that we can install menu items for our action.
+      -->
+      <context-menu-listeners>
+        <site idref="explorer">
+          <listener-class>opensky.remotedeployer.FileContextMenuListener</listener-class>
+        </site>
+        <site idref="navigator">
+          <listener-class>opensky.remotedeployer.FileContextMenuListener</listener-class>
+        </site>
+        <site idref="editor">
+          <listener-class>opensky.remotedeployer.FileContextMenuListener</listener-class>
+        </site>
+      </context-menu-listeners>
+      
+            <gallery>
+        <item>
+          <name>opensky.remotedeployer.BaseWizard</name>
+          <description>Configure: deployment</description>
+          <help></help>
+          <category>General</category>
+          <folder>Extension SDK Samples</folder>
+        </item>
+      </gallery>
+      
+    </jdeveloper-hook>
+    <menu-hook>
+      <menus>
+        <!-- 
+          Add the action in its own separator group at the top of the File 
+          menu. 
+        -->
+         <menubar id="javax.ide.view.MAIN_WINDOW_MENUBAR_ID">
+          <menu id="javax.ide.EDIT_MENU_ID">
+            <section id="esdksample.customsection" 
+                     after="javax.ide.COPY_PASTE_SECTION_ID">
+            <menu id="opensky.tools">
+            <label rskey="TEAM"/>
+                <section id="esdksample.customsection2" >
+                <item action-ref="opensky.remotedeployer.invokeConfig" />
+                </section>
+            </menu>
+            </section>
+          </menu>
+        </menubar>
+      </menus>
+      </menu-hook>
+
+  </hooks>
+</extension>
